@@ -29,7 +29,9 @@ class DayController extends Controller
         {
             // find or create day, and add to array $days
             $days[] = Day::with('menuItem')->firstOrCreate([
-                'date' => $dayIterator->toDateString()
+                'date' => $dayIterator->toDateString(),
+                'time' => null, 
+                'comment' => null
             ]);
 
             $dayIterator->addDay();
@@ -54,7 +56,9 @@ class DayController extends Controller
 
         $validatedData = $request->validate([
             'date' => 'required | date',
-            'menuItemID' => 'nullable'
+            'menuItemID' => 'nullable',
+            'time' => 'nullable', //todo add time formatting
+            'comment' => 'nullable'
         ]);
 
         $day->date = Carbon::parse($validatedData['date']);
@@ -64,6 +68,9 @@ class DayController extends Controller
             $menuItem = MenuItem::findOrFail($validatedData['menuItemID']);
             $day->menuItem()->associate($menuItem);
         }
+
+        $day->time = $validatedData['time'];
+        $day->comment = $validatedData['comment'];        
         
         $day->save();
 

@@ -9,7 +9,7 @@ class Day extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date'];
+    protected $fillable = ['date', 'time', 'comment'];
     protected $hidden = ['menu_item_id'];
 
     public function menuItem()
